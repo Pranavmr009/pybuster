@@ -8,7 +8,6 @@ wordlist = arggs.arg().w
 
 with open(wordlist, 'r') as wordlist:
     lines = wordlist.readlines()
-    print(type(lines))
 
 
 def find(line):
