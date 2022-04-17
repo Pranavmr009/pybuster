@@ -3,14 +3,20 @@ import time
 import requests
 import arggs
 import sys
+from datetime import date, datetime
 
+now = datetime.now()
+current_time = now.strftime("%H:%M:%S")
+today = date.today()
 url = arggs.arg().ip
 wordlist = arggs.arg().w
-
+user_agent = requests.utils.default_headers()
 google_url = 'http://www.google.com'
 
 try:
+    print('Checking your internet connection..........')
     r = requests.get(google_url)
+    print('You are connected')
 
 except:
     print('Something wrong with your connection! Please try again!!')
@@ -30,7 +36,7 @@ def find(line):
         #     line = line.rstrip()
         dirs = requests.get(url + '/' + line)
         if dirs.status_code != 404:
-            print(url + '/' + line)
+            print(f"{url}/{line}                                   (status: {dirs.status_code})")
         else:
             pass
 
@@ -42,6 +48,21 @@ if __name__ == '__main__':
 
     start = time.time()
     try:
+        print(f"""
+        
+=============================================================================================
+Pybuster v1.0.0
+by PRANAV MR, 2022
+==============================================================================================
+Url:                    {url}
+Method:                 GET
+Wordlist:               {wordlist}
+Negative status code:   404
+User Agent:             {user_agent['User-Agent']}
+==============================================================================================
+{today} {current_time} Starting Pybuster enumerating directories
+===============================================================================================
+        """)
         with open(wordlist, 'r') as wordlist:
             lines = wordlist.readlines()
 
@@ -55,6 +76,12 @@ if __name__ == '__main__':
 
         r = end - start
         print(r)
+
+        print(f"""
+===============================================================================================
+{today} {current_time} Finished
+===============================================================================================
+""")
 
     except FileNotFoundError:
         print('File not in path')
